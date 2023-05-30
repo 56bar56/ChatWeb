@@ -1,0 +1,248 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #fff;
+}
+
+.Logout {
+  float: left;
+}
+
+ul.list-message {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+.textB {
+  top: 0px;
+  left: 50px;
+  height: 10px;
+  font-size: 100px;
+  font-family: fantasy;
+}
+
+.header {
+  height: 50px;
+  background-color: blue;
+}
+
+.content {
+  height: 80%;
+  background-color: #fff;
+}
+
+#textholder {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 10%;
+  background-color: #ccc;
+}
+
+.currentChat {
+  height: 80%;
+  position: fixed;
+  top: 60%;
+  right: 0;
+  transform: translate(0, -50%);
+  background-color: beige;
+  width: 65%;
+  float: right;
+}
+
+.currentChatKey {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.addContant {
+  float: right;
+}
+
+.contant {
+  height: 80%;
+  position: fixed;
+  top: 60%;
+  right: 65%;
+  transform: translate(0, -50%);
+  background-color: rgb(76, 162, 243);
+  width: 35%;
+  float: right;
+}
+
+.modal-backdrop {
+  display: none;
+}
+
+.date {
+  padding-left: 70%;
+  font-size: small;
+  font-weight: lighter;
+}
+
+.lastMessage {
+  padding-left: 35%;
+}
+
+.currentChatUser {
+  font-size: large;
+  height: 5%;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.myuserPicture {
+  width: 10px;
+  height: 10px;
+}
+.user1,
+.user2 {
+  display: flex;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.user1 {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.user2 {
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user1 {
+  float: left;
+  clear: both;
+}
+
+.user2 {
+  float: right;
+  clear: both;
+}
+
+.user1 img,
+.user2 img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user1 .speech-bubble,
+.user2 .speech-bubble {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user1 .speech-bubble::before,
+.user2 .speech-bubble::before {
+  content: "";
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 16px 10px 0;
+  border-color: transparent #ffffff;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: -16px;
+  top: 18px;
+}
+
+.user2 .speech-bubble::before {
+  content: "";
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent #ffffff;
+  display: block;
+  width: 0;
+  z-index: 1;
+  right: -16px;
+  left: auto;
+  top: 18px;
+}
+
+.user2 .speech-bubble::after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent #ffffff;
+  display: block;
+  width: 0;
+  z-index: 1;
+  right: -16px;
+  left: auto;
+  top: 18px;
+}
+
+.user1 img,
+.user2 img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.no-dot-list {
+  list-style-type: none;
+}
+
+/* Added styles for contact list */
+.list-group {
+  max-height: 478px;
+  overflow-y: auto;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item.active {
+  color: rgb(7, 29, 39);
+  background-color: rgb(39, 195, 242);
+}
+.time {
+  text-align: right;
+}
+.leave {
+    color: white;
+}
+.message {
+  text-align: center;
+  color: red;
+} 
+.userPicName {
+  background-color: blue;
+  float: right;
+}
+.topM{
+  top: 10px;
+}
