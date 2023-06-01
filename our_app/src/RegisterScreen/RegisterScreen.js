@@ -31,7 +31,51 @@ function RegisterScreen(props) {
     const charCode = char.charCodeAt(0);
     return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122);
   };
-  function registerButton() {
+  async function register(username, password, displayName, profilePic) {
+    const data = {
+       username: username,
+       password: password,
+       displayName: displayName,
+       profilePic: profilePic
+    }
+  
+    const res = await fetch('http://localhost:5000/api/Users', {
+      'method': 'post',
+      'headers': {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(data)
+    })
+    
+    
+    const textResponse = await res.text();
+
+    console.log(textResponse);
+    return textResponse;
+  }
+  /*
+  async function getToken(username, password) {
+    const data = {
+       username: username,
+       password: password
+    }
+  
+    const res = await fetch('http://localhost:5000/api/Tokens', {
+      'method': 'post',
+      'headers': {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(data)
+    })
+    
+    
+    const textResponse = await res.text();
+
+    console.log(textResponse);
+    return res;
+  }
+  */
+  async function registerButton() {
     let regApproved = 1;
     const newUsername = newUsernameInput.current.value;
     const newPassword = newPasswordInput.current.value;
@@ -41,6 +85,66 @@ function RegisterScreen(props) {
     setmessageRegisterUsername("");
     setmessageRegisterEmail("");
     setmessageRegisterPassword("");
+    setmessageRegisterProfilename("");
+    //////////////////////////////////
+    if(newPassword.length>16||newPassword.length<4) {
+      setmessageRegisterPassword("Password is not valid");
+      regApproved = 0;
+    } else {
+      let have$=0;
+      let haveNum=0;
+      let haveLet=0;
+      let haveEmpjy=0;
+      for(let i=0;i<newPassword.length;i++) {
+          if(newPassword.charAt(i)==='$') {
+            have$=1;
+          }
+          if(newPassword.charAt(i).match(/[0-9]/)) {
+            haveNum=1;
+          }
+          if(isLetter(newPassword.charAt(i))) {
+            haveLet=1;
+          }
+          if (newPassword.charAt(i) >= 0x1F300 && newPassword.charAt(i) <= 0x1FFFF) { 
+            haveEmpjy=1;
+          }
+      }
+      if(!have$||!haveNum||!haveLet||haveEmpjy) {
+        setmessageRegisterPassword("Password is not valid");
+        regApproved = 0;
+      }
+    }
+    if (!newImg.trim()) {
+      regApproved = 0;
+      setmessageRegisterUsername("profile photo is not valid");
+    }
+    if (!newUsername.trim()) {
+      regApproved = 0;
+      setmessageRegisterUsername("Username is not valid");
+    }
+    if (!newProfilename.trim()) {
+      regApproved = 0;
+      setmessageRegisterProfilename("Profile Name is not valid");
+    }
+    const regex3 = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex3.test(newEmail)) {
+      setmessageRegisterEmail("Email is not valid");
+      regApproved = 0;
+    }
+    if(regApproved === 1){
+      const response = await register(newUsername, newPassword, newProfilename, newImg);
+      //todo check if the registration goes well with all the parameters.
+      if(response === ""){
+        props.setPassword(newPassword);
+        props.setUsername(newUsername);
+        props.setProfilePic(newImg);
+        navigate('/Chats'); // Navigate to the "/chat" route
+      }
+      else {
+        setmessageRegisterUsername("This user name or/and password is already used");
+      }
+    }
+    /*
     for (let i = 0; i < props.info.length; i++) {
       if (props.info[i].username === newUsername) {
         regApproved = 0;
@@ -63,6 +167,7 @@ function RegisterScreen(props) {
       regApproved = 0;
       setmessageRegisterProfilename("Profile Name is not valid");
     }
+    ////////////////////////////////////////////////////////////////////////////////
     if(newPassword.length>16||newPassword.length<4) {
       setmessageRegisterPassword("Password is not valid");
       regApproved = 0;
@@ -83,22 +188,23 @@ function RegisterScreen(props) {
           }
           if (newPassword.charAt(i) >= 0x1F300 && newPassword.charAt(i) <= 0x1FFFF) { 
             haveEmpjy=1;
-    }
-
-
+          }
       }
       if(!have$||!haveNum||!haveLet||haveEmpjy) {
-      setmessageRegisterPassword("Password is not valid");
-      regApproved = 0;
+        setmessageRegisterPassword("Password is not valid");
+        regApproved = 0;
+      }
     }
-    }
-   
+        //////////////////////////////////////////////////////////////////////////////////////////
 
+   
+    ///////////////////////////////////////////////////////////////////
     const regex3 = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex3.test(newEmail)) {
       setmessageRegisterEmail("Email is not valid");
       regApproved = 0;
     }
+    //////////////////////////////////////////////////////////////////
 
     if (regApproved) {
       const newDeat = { username: newUsername, password: newPassword, profilename: newProfilename, email: newEmail, img: newImg };
@@ -112,6 +218,8 @@ function RegisterScreen(props) {
       navigate('/Chats'); // Navigate to the "/chat" route
     }
   }
+  */
+}
 
   function handlePasswordFocus() {
     setShowPasswordMessage(true);

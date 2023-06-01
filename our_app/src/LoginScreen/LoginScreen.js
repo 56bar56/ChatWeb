@@ -7,11 +7,40 @@ function LoginScreen(props) {
     const passwordInput = useRef(null);
     let [messageLoginF,setmessageLoginF] = useState('');
     const navigate = useNavigate();
+    async function getToken(username, password) {
+      const data = {
+        username: username,
+        password: password
+      }
+      const res = await fetch('http://localhost:5000/api/Tokens', {
+        'method': 'post',
+        'headers': {
+          'Content-Type': 'application/json',
+        },
+        'body': JSON.stringify(data)
+      })
+      const token = await res.text();
+      return token;
+    }
+    async function getInfo(token, username) {
+      const res = await fetch('http://localhost:5000/api/Users/' + username, {
+        'method': 'get',
+        'headers': {
+          'authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+      });
     
-     function logIn () {
+      const information = await res.text();
+      return information;
+    }
+     async function logIn () {
         const username = usernameInput.current.value;
         const password = passwordInput.current.value;
         let weDontMove=1;
+        const res = await getToken(username, password);
+        //console.log(res);
+        /*
         for (let i = 0; i < props.info.length; i++) { //checking if the user and password exist
             if (username === props.info[i].username && password === props.info[i].password) {
                 weDontMove = 0;
@@ -21,16 +50,27 @@ function LoginScreen(props) {
                 navigate('/Chats'); // Navigate to the "/chat" route
             } 
         }
-        if(weDontMove) { //In case it is not exist, prints error message
+        */
+        if(res === 'Incorrect username and/or password') { //In case it is not exist, prints error message
             passwordInput.current.value = '';
             usernameInput.current.value = '';
             setmessageLoginF('wrong password or username');
+        }
+        else{
+          props.setPassword(password);
+          props.setUsername(username);
+          const infoForPicture = await getInfo(res, username);
+          const data = JSON.parse(infoForPicture);
+          const profilePic = data.profilePic;
+          //console.log(profilePic);
+          props.setProfilePic(profilePic);
+          navigate('/Chats'); // Navigate to the "/chat" route
         }
     }
 
 
 
-    return (
+  return (
 <div>
 <div className="header">LogIn</div>
 <div className="container">
