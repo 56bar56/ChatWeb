@@ -7,6 +7,8 @@ function ContactList(props) {
   const modal = useRef(null);
   const activeItem = useRef(null);
 
+  //props.setchatsUsers(JSON.parse(props.infoContacts));
+
   function addContactBtn() {
     modal.current.classList.add('show');
     modal.current.style.display = 'block';
@@ -21,49 +23,65 @@ function ContactList(props) {
     }
   }
 
-  function addCon(newCon) {
+  async function getToken(username, password) {
+    const data = {
+      username: username,
+      password: password
+    }
+    const res = await fetch('http://localhost:5000/api/Tokens', {
+      'method': 'post',
+      'headers': {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(data)
+    })
+    const token = await res.text();
+    return token;
+  }
+
+  async function newChat(username, token) {
+    const data = {
+      username: username
+    }
+
+    const res = await fetch('http://localhost:5000/api/Chats', {
+      'method': 'post',
+      'headers': {
+        'authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify(data)
+    })
+    return await res.text();
+  }
+
+  async function chatContacts(token) {
+
+    const res = await fetch('http://localhost:5000/api/Chats', {
+      'method': 'get',
+      'headers': {
+        'authorization': 'Bearer ' + token, //getToken(props.username, props.password),
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify()
+    })
+    return res.text();
+  }
+
+
+  async function addCon(newCon) {
     setmessageAddContact('');
-    let equal=-1;
-    let saveImage;
-    for(let i=0; i< props.info.length;i++) {
-      if(newCon===props.info[i].username) {
-        for(let j=0; j< props.users.length;j++) {
-          if(newCon===props.users[j].name) {
-            equal=-2;
-            break;
-          }
-        }
-        if(equal === -2)
-          break;
-        equal=i;
-        saveImage=props.info[i].img;
-        break;
-      }
-      
-    }
-    if(equal >= 0) {
-      taskInput.current.value = '';
-  
-      // Remove active class from all items
-      // Attach click event listener to the newly created list item
-      const newChat=[];
-      const newPerson = { name: newCon, chat: newChat,  active: false, img: saveImage, time: "" };
-     // const newArray=[...props.users, newPerson];
-      //props.setUsers(prevArray => [...prevArray, newPerson]);
-      props.setUsers((prevUsers)=>{
-        let temp=[...prevUsers]
-        temp.push(newPerson);
-        return temp;
-      });
 
-    } else {
-      if(equal=== -1)
-        setmessageAddContact('Username does not exist');
-      else
-        setmessageAddContact('Username was already added');
+    const token = await getToken(props.username, props.password);
+    const res = await newChat(newCon, token);
 
+    if(res === "No such user")
+      setmessageAddContact('Username does not exist');
+    else{
+      const infoForChatUsers = await chatContacts(token);
+      props.setchatsUsers(JSON.parse(infoForChatUsers));
     }
-   
+
   }
 
   return (
@@ -119,10 +137,19 @@ function ContactList(props) {
         </div>
       </div>
       <ul className="list-group">
-        {props.users.map((item, index) => (
-          <ListItem obj={item} setUsers={props.setUsers} chatSetMessage={props.chatSetMessage} setchatState={props.setchatState} setnameTop={props.setnameTop} setpartnerImage={props.setpartnerImage}/>
+        {props.chatsUsers.map((item, index) => (
+          <ListItem
+            key={index}
+            obj={item}
+            setchatsUsers={props.setchatsUsers}
+            //chatSetMessage={props.chatSetMessage}
+            setchatState={props.setchatState}
+            setnameTop={props.setnameTop}
+            setpartnerImage={props.setpartnerImage}
+          />
         ))}
       </ul>
+
       <div>
         <div className="message">{messageAddContact}</div>
       </div>

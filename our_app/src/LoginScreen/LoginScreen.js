@@ -34,6 +34,21 @@ function LoginScreen(props) {
       const information = await res.text();
       return information;
     }
+
+    async function chatContacts(token) {
+
+      const res = await fetch('http://localhost:5000/api/Chats', {
+        'method': 'get',
+        'headers': {
+          'authorization': 'Bearer ' + token, //getToken(props.username, props.password),
+          'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify()
+      })
+      return res.text();
+    }
+  
+
      async function logIn () {
         const username = usernameInput.current.value;
         const password = passwordInput.current.value;
@@ -64,6 +79,9 @@ function LoginScreen(props) {
           const profilePic = data.profilePic;
           //console.log(profilePic);
           props.setProfilePic(profilePic);
+          const infoForChatUsers = await chatContacts(res);
+          //console.log(infoForChatUsers);
+          props.setchatsUsers(JSON.parse(infoForChatUsers));
           navigate('/Chats'); // Navigate to the "/chat" route
         }
     }

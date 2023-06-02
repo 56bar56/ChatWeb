@@ -12,16 +12,17 @@ function App() {
   ]);
   const [inMyChat,setinMyChat]=useState(''); // maybe delete later 
   const [myImage,setmyImage]=useState(''); //delete later
-  const [username,setUsername]=useState('');
-  const [password,setPassword]=useState('');
-  const [profilePic,setProfilePic]=useState('');
+  const [username,setUsername]=useState(''); //username
+  const [password,setPassword]=useState(''); //password
+  const [profilePic,setProfilePic]=useState(''); //profile img
+  const [chatsUsers,setchatsUsers]= useState([]); //chat contacts
   
   return (
     <BrowserRouter>
     <Routes>
-      <Route path = "/" element = {<LoginScreen setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setinMyChat={setinMyChat} setmyImage={setmyImage}/>}></Route>
+      <Route path = "/" element = {<LoginScreen setchatsUsers={setchatsUsers} setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setinMyChat={setinMyChat} setmyImage={setmyImage}/>}></Route>
       <Route path = "/register" element = {<RegisterScreen setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setInfo={setLoginDetails} setinMyChat={setinMyChat} setmyImage={setmyImage} myImage= {myImage} />}></Route>
-      <Route path = "/Chats" element = {<ChatPage profilePic={profilePic} password={password} username={username} info = {loginDetails} inMyChat={inMyChat} myImage={myImage}/>}></Route>
+      <Route path = "/Chats" element = {<ChatPage setchatsUsers={setchatsUsers} chatsUsers={chatsUsers} profilePic={profilePic} password={password} username={username} info = {loginDetails} inMyChat={inMyChat} myImage={myImage}/>}></Route>
     </Routes>
     </BrowserRouter>
   );

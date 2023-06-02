@@ -114,10 +114,12 @@ function RegisterScreen(props) {
         regApproved = 0;
       }
     }
+    /*
     if (!newImg.trim()) {
       regApproved = 0;
       setmessageRegisterUsername("profile photo is not valid");
     }
+    */
     if (!newUsername.trim()) {
       regApproved = 0;
       setmessageRegisterUsername("Username is not valid");
@@ -144,82 +146,8 @@ function RegisterScreen(props) {
         setmessageRegisterUsername("This user name or/and password is already used");
       }
     }
-    /*
-    for (let i = 0; i < props.info.length; i++) {
-      if (props.info[i].username === newUsername) {
-        regApproved = 0;
-        setmessageRegisterUsername("This user name is already used");
-      }
-      if (props.info[i].email === newEmail) {
-        regApproved = 0;
-        setmessageRegisterEmail("This email is already registered here");
-      }
-    }
-    if (!newImg.trim()) {
-      regApproved = 0;
-      setmessageRegisterUsername("profile photo is not valid");
-    }
-    if (!newUsername.trim()) {
-      regApproved = 0;
-      setmessageRegisterUsername("Username is not valid");
-    }
-    if (!newProfilename.trim()) {
-      regApproved = 0;
-      setmessageRegisterProfilename("Profile Name is not valid");
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-    if(newPassword.length>16||newPassword.length<4) {
-      setmessageRegisterPassword("Password is not valid");
-      regApproved = 0;
-    } else {
-      let have$=0;
-      let haveNum=0;
-      let haveLet=0;
-      let haveEmpjy=0;
-      for(let i=0;i<newPassword.length;i++) {
-          if(newPassword.charAt(i)==='$') {
-            have$=1;
-          }
-          if(newPassword.charAt(i).match(/[0-9]/)) {
-            haveNum=1;
-          }
-          if(isLetter(newPassword.charAt(i))) {
-            haveLet=1;
-          }
-          if (newPassword.charAt(i) >= 0x1F300 && newPassword.charAt(i) <= 0x1FFFF) { 
-            haveEmpjy=1;
-          }
-      }
-      if(!have$||!haveNum||!haveLet||haveEmpjy) {
-        setmessageRegisterPassword("Password is not valid");
-        regApproved = 0;
-      }
-    }
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-   
-    ///////////////////////////////////////////////////////////////////
-    const regex3 = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex3.test(newEmail)) {
-      setmessageRegisterEmail("Email is not valid");
-      regApproved = 0;
-    }
-    //////////////////////////////////////////////////////////////////
-
-    if (regApproved) {
-      const newDeat = { username: newUsername, password: newPassword, profilename: newProfilename, email: newEmail, img: newImg };
-      props.setInfo((prevUsers)=>{
-        let temp=[...prevUsers];
-        temp.push(newDeat);
-        return temp;
-      });
-      props.setinMyChat(newUsername);
-      props.setmyImage(newImg);
-      navigate('/Chats'); // Navigate to the "/chat" route
-    }
   }
-  */
-}
+
 
   function handlePasswordFocus() {
     setShowPasswordMessage(true);
