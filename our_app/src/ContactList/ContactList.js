@@ -103,6 +103,7 @@ function ContactList(props) {
     } else {
       setmessageAddContact('you already have a chat with that user.');
     }
+    console.log(props.chatsUsers);
     // todo check if there is already a chat with this user
 
   }
@@ -173,6 +174,8 @@ function ContactList(props) {
             setchatState={props.setchatState}
             setnameTop={props.setnameTop}
             setpartnerImage={props.setpartnerImage}
+            time={props.time}
+            setTime={props.setTime}
           />
         ))}
       </ul>

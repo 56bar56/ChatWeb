@@ -82,7 +82,7 @@ function ListItem(props) {
       const allMsg = await getChat(token, foundId);
       const newAllMsg = JSON.parse(allMsg);
       const sortedMessages = newAllMsg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
-      console.log(sortedMessages);
+      //console.log(sortedMessages);
       props.chatSetMessage(sortedMessages);
       // Separate messages into arrays based on the sender's username
       /*

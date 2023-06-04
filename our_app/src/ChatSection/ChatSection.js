@@ -71,20 +71,20 @@ function ChatSection(props) {
   const handleSendMessage = async () => {
     if (props.users?.length === 0) {
       setNoContactChosen("you didnt chose a contact");
-      console.log("hey");
+      //console.log("hey");
 
     } else {
       setNoContactChosen('');
-      console.log("hey1");
+      //console.log("hey1");
 
       const newMessage = messageInputValue.trim();
       if (newMessage !== '') {
-        console.log("hey2");
+        //console.log("hey2");
 
         const token = await getToken(props.username, props.password);
         const alreadyChats = await chatContacts(token);
         const parsedOutput = JSON.parse(alreadyChats);
-        console.log(parsedOutput);
+        //console.log(parsedOutput);
 
         const usernameToFind = props.otherUser; // The username to search for
         let foundId = -1;
@@ -94,16 +94,24 @@ function ChatSection(props) {
             foundId = obj.id;
           }
         });
-        console.log(usernameToFind);
 
         if (foundId !== -1) {
           const alreadyChats = await postMsg(token, foundId, newMessage);
-          console.log(alreadyChats);
 
           const allMsg = await getChat(token, foundId);
           const newAllMsg = JSON.parse(allMsg);
           const sortedMessages = newAllMsg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
-          console.log(sortedMessages);
+          const lastMessage = sortedMessages[sortedMessages.length - 1];
+          
+          const updatedChatsUsers = [...props.chatsUsers]; // Create a copy of the array
+          for (let i = 0; i < props.chatsUsers.length; i++) {
+            if (updatedChatsUsers[i].user.username === props.otherUser) {
+              updatedChatsUsers[i].lastMessage = lastMessage;
+            }
+          }
+
+          props.setchatsUsers(updatedChatsUsers); // Set the modified array back to the useState variable
+          //console.log(formattedTimeString); // Output: 04:17:18
           props.chatSetMessage(sortedMessages);
         }
         setMessageInputValue('');
