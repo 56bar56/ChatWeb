@@ -1,0 +1,43 @@
+import { MongoClient } from 'mongodb';
+ async function postUsers(username,password,displayName,profilePic) {
+    console.log(username,password,displayName,profilePic);
+    let answer=true;
+    const client= new MongoClient("mongodb://localhost:27017");
+    try {
+        const db= client.db("whatsapp");
+        const users=db.collection("users");
+        let result = await users.findOne({"username": username});
+        if(result=== null) {
+            console.log("insert");
+            await users.insertOne({"username" : username, "password" : password, "displayName" : displayName, "profilePic" : profilePic  });
+        } else {
+            console.log("false");
+            answer=false;
+        }
+
+    }
+    finally{
+        await client.close();    
+        return answer;
+    }
+} 
+
+ async function getUsers(id) {
+    const client= new MongoClient("mongodb://localhost:27017");
+    let result;
+    try {
+        const db= client.db("whatsapp");
+        const users=db.collection("users");
+         result = await users.findOne({"username": id});
+    }
+    finally{
+        await client.close();   
+        return {"username" : result.username, "displayName" : result.displayName, "profilePic" : result.profilePic}; 
+    }
+}
+
+
+export default {
+    postUsers,
+    getUsers
+}
