@@ -67,20 +67,43 @@ function ContactList(props) {
     })
     return res.text();
   }
+  async function chatContacts(token) {
+
+    const res = await fetch('http://localhost:5000/api/Chats', {
+      'method': 'get',
+      'headers': {
+        'authorization': 'Bearer ' + token, //getToken(props.username, props.password),
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify()
+    })
+    return res.text();
+  }
+
 
 
   async function addCon(newCon) {
     setmessageAddContact('');
 
     const token = await getToken(props.username, props.password);
-    const res = await newChat(newCon, token);
+    const alreadyChats = await chatContacts(token);
+    //console.log(alreadyChats);
+    const parsedOutput = JSON.parse(alreadyChats);
+    const usernames = parsedOutput.map(obj => obj.user.username);
+    //console.log(usernames);
+    if (!usernames.includes(newCon)) {
+      const res = await newChat(newCon, token);
 
-    if(res === "No such user")
-      setmessageAddContact('Username does not exist');
-    else{
-      const infoForChatUsers = await chatContacts(token);
-      props.setchatsUsers(JSON.parse(infoForChatUsers));
+      if(res === "No such user")
+        setmessageAddContact('Username does not exist');
+      else{
+        const infoForChatUsers = await chatContacts(token);
+        props.setchatsUsers(JSON.parse(infoForChatUsers));
+      }
+    } else {
+      setmessageAddContact('you already have a chat with that user.');
     }
+    // todo check if there is already a chat with this user
 
   }
 
@@ -139,10 +162,14 @@ function ContactList(props) {
       <ul className="list-group">
         {props.chatsUsers.map((item, index) => (
           <ListItem
+            setOtherUser={props.setOtherUser} 
+            username = {props.username}
+            password = {props.password}
             key={index}
             obj={item}
+            chatsUsers={props.chatsUsers}
             setchatsUsers={props.setchatsUsers}
-            //chatSetMessage={props.chatSetMessage}
+            chatSetMessage={props.chatSetMessage}
             setchatState={props.setchatState}
             setnameTop={props.setnameTop}
             setpartnerImage={props.setpartnerImage}

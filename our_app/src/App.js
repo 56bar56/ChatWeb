@@ -21,7 +21,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path = "/" element = {<LoginScreen setchatsUsers={setchatsUsers} setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setinMyChat={setinMyChat} setmyImage={setmyImage}/>}></Route>
-      <Route path = "/register" element = {<RegisterScreen setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setInfo={setLoginDetails} setinMyChat={setinMyChat} setmyImage={setmyImage} myImage= {myImage} />}></Route>
+      <Route path = "/register" element = {<RegisterScreen setchatsUsers={setchatsUsers} setProfilePic={setProfilePic} setPassword={setPassword} setUsername={setUsername} setInfo={setLoginDetails} setinMyChat={setinMyChat} setmyImage={setmyImage} myImage= {myImage} />}></Route>
       <Route path = "/Chats" element = {<ChatPage setchatsUsers={setchatsUsers} chatsUsers={chatsUsers} profilePic={profilePic} password={password} username={username} info = {loginDetails} inMyChat={inMyChat} myImage={myImage}/>}></Route>
     </Routes>
     </BrowserRouter>

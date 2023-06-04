@@ -80,7 +80,7 @@ function LoginScreen(props) {
           //console.log(profilePic);
           props.setProfilePic(profilePic);
           const infoForChatUsers = await chatContacts(res);
-          //console.log(infoForChatUsers);
+          console.log(infoForChatUsers);
           props.setchatsUsers(JSON.parse(infoForChatUsers));
           navigate('/Chats'); // Navigate to the "/chat" route
         }

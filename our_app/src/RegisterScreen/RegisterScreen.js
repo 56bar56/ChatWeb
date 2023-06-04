@@ -53,13 +53,11 @@ function RegisterScreen(props) {
     console.log(textResponse);
     return textResponse;
   }
-  /*
   async function getToken(username, password) {
     const data = {
-       username: username,
-       password: password
+      username: username,
+      password: password
     }
-  
     const res = await fetch('http://localhost:5000/api/Tokens', {
       'method': 'post',
       'headers': {
@@ -67,14 +65,21 @@ function RegisterScreen(props) {
       },
       'body': JSON.stringify(data)
     })
-    
-    
-    const textResponse = await res.text();
-
-    console.log(textResponse);
-    return res;
+    const token = await res.text();
+    return token;
   }
-  */
+  async function chatContacts(token) {
+
+    const res = await fetch('http://localhost:5000/api/Chats', {
+      'method': 'get',
+      'headers': {
+        'authorization': 'Bearer ' + token, //getToken(props.username, props.password),
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify()
+    })
+    return res.text();
+  }
   async function registerButton() {
     let regApproved = 1;
     const newUsername = newUsernameInput.current.value;
@@ -140,6 +145,10 @@ function RegisterScreen(props) {
         props.setPassword(newPassword);
         props.setUsername(newUsername);
         props.setProfilePic(newImg);
+        const res = await getToken(newUsername, newPassword);
+        const infoForChatUsers = await chatContacts(res);
+        console.log(infoForChatUsers);
+        props.setchatsUsers(JSON.parse(infoForChatUsers));
         navigate('/Chats'); // Navigate to the "/chat" route
       }
       else {
