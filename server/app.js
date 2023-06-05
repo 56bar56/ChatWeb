@@ -16,6 +16,7 @@ const io = new Server(server2);
 server.use(express.static('public'));
 server.use(express.json());
 server.use(bodyParser.urlencoded({extended: true}));
+
 server.use('/api/Tokens',routerToken);
 server.use('/api/Chats',routerChats);s
 server.use('/api/Users',routerUsers);

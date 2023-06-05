@@ -87,7 +87,7 @@ function ChatSection(props) {
     }
   })
   const handleSendMessage = async () => {
-    if (props.users?.length === 0) {
+    if (props.users.length === 0) {
       setNoContactChosen("you didnt chose a contact");
 
     } else {
