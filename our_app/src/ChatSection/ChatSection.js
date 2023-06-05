@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import io from 'socket.io-client';
+
 async function getToken(username, password) {
   const data = {
     username: username,
@@ -59,6 +61,7 @@ async function postMsg(token, id, msg) {
 function ChatSection(props) {
   const [messageInputValue, setMessageInputValue] = useState('');
   const [noContactChosen,setNoContactChosen]=useState('');
+  const socket = io();
   const handleInputChange = (event) => {
     setMessageInputValue(event.target.value);
   };
@@ -67,6 +70,22 @@ function ChatSection(props) {
     const time = currentTime.toLocaleTimeString();
     return time;
   }
+  //send to us the whole chat again : 
+  socket.on('msg', async function (chat){
+    if(props.username === chat.user1 || props.username === chat.user2){
+      const sortedMessages = chat.msg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
+      const lastMessage = sortedMessages[sortedMessages.length - 1];
+      
+      const updatedChatsUsers = [...props.chatsUsers]; // Create a copy of the array
+      for (let i = 0; i < props.chatsUsers.length; i++) {
+        if (updatedChatsUsers[i].user.username === props.otherUser) {
+          updatedChatsUsers[i].lastMessage = lastMessage;
+        }
+      }
+      props.setchatsUsers(updatedChatsUsers); // Set the modified array back to the useState variable
+      props.chatSetMessage(sortedMessages);
+    }
+  })
   const handleSendMessage = async () => {
     if (props.users?.length === 0) {
       setNoContactChosen("you didnt chose a contact");
@@ -93,6 +112,7 @@ function ChatSection(props) {
         if (foundId !== -1) {
           const alreadyChats = await postMsg(token, foundId, newMessage);
           const allMsg = await getChat(token, foundId);
+          socket.emit('msg', foundId);
           const newAllMsg = JSON.parse(allMsg);
           const sortedMessages = newAllMsg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
           const lastMessage = sortedMessages[sortedMessages.length - 1];
