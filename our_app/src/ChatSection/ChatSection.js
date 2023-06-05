@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import io from 'socket.io-client';
 async function getToken(username, password) {
   const data = {
     username: username,
@@ -62,18 +63,41 @@ function ChatSection(props) {
   const handleInputChange = (event) => {
     setMessageInputValue(event.target.value);
   };
+  console.log("hii1");
+  var socket = io("http://localhost:8080");
+  socket.on('msg', async function (chat){
+    console.log("hii2");
+    if(props.username === chat.user1 || props.username === chat.user2){
+      const sortedMessages = chat.msg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
+      const lastMessage = sortedMessages[sortedMessages.length - 1];
+      
+      const updatedChatsUsers = [...props.chatsUsers]; // Create a copy of the array
+      for (let i = 0; i < props.chatsUsers.length; i++) {
+        if (updatedChatsUsers[i].user.username === props.otherUser) {
+          updatedChatsUsers[i].lastMessage = lastMessage;
+        }
+      }
+      props.setchatsUsers(updatedChatsUsers); // Set the modified array back to the useState variable
+      props.chatSetMessage(sortedMessages);
+    }
+  })
   function getCurrentTime() {
     const currentTime = new Date();
     const time = currentTime.toLocaleTimeString();
     return time;
   }
   const handleSendMessage = async () => {
-    if (props.users.length === 0) {
+    let bool=false;
+      for(let i=0; i<props.chatsUsers.length;i++) {
+          if(props.chatsUsers[i].active) {
+            bool=true;
+          }
+      }
+    if (bool===false) {
       setNoContactChosen("you didnt chose a contact");
 
     } else {
       setNoContactChosen('');
-
       const newMessage = messageInputValue.trim();
       if (newMessage !== '') {
 
@@ -93,6 +117,7 @@ function ChatSection(props) {
         if (foundId !== -1) {
           const alreadyChats = await postMsg(token, foundId, newMessage);
           const allMsg = await getChat(token, foundId);
+          socket.emit('msg', foundId);
           const newAllMsg = JSON.parse(allMsg);
           const sortedMessages = newAllMsg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
           const lastMessage = sortedMessages[sortedMessages.length - 1];
