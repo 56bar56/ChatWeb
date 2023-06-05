@@ -50,7 +50,6 @@ function RegisterScreen(props) {
     
     const textResponse = await res.text();
 
-    console.log(textResponse);
     return textResponse;
   }
   async function getToken(username, password) {
@@ -147,7 +146,6 @@ function RegisterScreen(props) {
         props.setProfilePic(newImg);
         const res = await getToken(newUsername, newPassword);
         const infoForChatUsers = await chatContacts(res);
-        console.log(infoForChatUsers);
         props.setchatsUsers(JSON.parse(infoForChatUsers));
         navigate('/Chats'); // Navigate to the "/chat" route
       }

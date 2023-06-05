@@ -9,17 +9,17 @@ export async function postUsers(req,res) {
 
    }
 }
-export function getUsers(req,res) {
+export async function getUsers(req,res) {
     if (req.headers.authorization) {
         // Extract the token from that header
         const token = req.headers.authorization.split(" ")[1];
         try {
         // Verify the token is valid
-        const data = jwt.verify(token, key);
-        const username= data.username;  
-        if(username===req.query.id) {
-            let ret=Users.getUsers(req.query.id);
-            //לוודא שככה נגיע לid
+            const data = jwt.verify(token, key);
+            const username= data.username;  
+            if(username===req.params.id) {
+                let ret= await Users.getUsers(req.params.id);
+                //לוודא שככה נגיע לid
                 res.status(200).send(ret);
             } else {
             res.status(409).send('you dont have the fit token');

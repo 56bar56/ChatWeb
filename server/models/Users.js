@@ -20,7 +20,7 @@ import { MongoClient } from 'mongodb';
 } 
 
  async function getUsers(id) {
-    const client= new MongoClient("mongodb://localhost:27017");
+    const client= new MongoClient('mongodb://127.0.0.1:27017');
     let result;
     try {
         const db= client.db("whatsapp");

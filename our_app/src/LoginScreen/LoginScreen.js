@@ -54,7 +54,6 @@ function LoginScreen(props) {
         const password = passwordInput.current.value;
         let weDontMove=1;
         const res = await getToken(username, password);
-        //console.log(res);
         /*
         for (let i = 0; i < props.info.length; i++) { //checking if the user and password exist
             if (username === props.info[i].username && password === props.info[i].password) {
@@ -77,10 +76,8 @@ function LoginScreen(props) {
           const infoForPicture = await getInfo(res, username);
           const data = JSON.parse(infoForPicture);
           const profilePic = data.profilePic;
-          //console.log(profilePic);
           props.setProfilePic(profilePic);
           const infoForChatUsers = await chatContacts(res);
-          console.log(infoForChatUsers);
           props.setchatsUsers(JSON.parse(infoForChatUsers));
           navigate('/Chats'); // Navigate to the "/chat" route
         }

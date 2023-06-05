@@ -52,7 +52,6 @@ async function postMsg(token, id, msg) {
     },
     'body': JSON.stringify(data)
   });
-
   const information = await res.text();
   return information;
 }
@@ -71,20 +70,16 @@ function ChatSection(props) {
   const handleSendMessage = async () => {
     if (props.users?.length === 0) {
       setNoContactChosen("you didnt chose a contact");
-      //console.log("hey");
 
     } else {
       setNoContactChosen('');
-      //console.log("hey1");
 
       const newMessage = messageInputValue.trim();
       if (newMessage !== '') {
-        //console.log("hey2");
 
         const token = await getToken(props.username, props.password);
         const alreadyChats = await chatContacts(token);
         const parsedOutput = JSON.parse(alreadyChats);
-        //console.log(parsedOutput);
 
         const usernameToFind = props.otherUser; // The username to search for
         let foundId = -1;
@@ -97,7 +92,6 @@ function ChatSection(props) {
 
         if (foundId !== -1) {
           const alreadyChats = await postMsg(token, foundId, newMessage);
-
           const allMsg = await getChat(token, foundId);
           const newAllMsg = JSON.parse(allMsg);
           const sortedMessages = newAllMsg.sort((a, b) => a.id - b.id); //maybe need to be deleted but dont know yet
@@ -111,7 +105,6 @@ function ChatSection(props) {
           }
 
           props.setchatsUsers(updatedChatsUsers); // Set the modified array back to the useState variable
-          //console.log(formattedTimeString); // Output: 04:17:18
           props.chatSetMessage(sortedMessages);
         }
         setMessageInputValue('');
