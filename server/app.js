@@ -8,7 +8,6 @@ const server= express();
 server.use(express.static('public'));
 server.use(express.json());
 server.use(bodyParser());
-const key="our key";
 //server.set('view engine', 'ejs');
 server.use('/api/Tokens',routerToken);
 server.use('/api/Chats',routerChats);

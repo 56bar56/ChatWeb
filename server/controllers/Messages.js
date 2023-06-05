@@ -1,5 +1,6 @@
 import Messages from '../models/Messages.js'
 import jwt from "jsonwebtoken"
+const key="our key";
 export function getMessages(req,res) {
     if (req.headers.authorization) {
         // Extract the token from that header

@@ -1,17 +1,18 @@
 import { MongoClient } from 'mongodb';
 import jwt from "jsonwebtoken";
+const key="our key";
  async function getToken(username,password) {
     let answer=false;
-    const client= new MongoClient("mongodb://localhost:27017");
+    const client= new MongoClient('mongodb://127.0.0.1:27017');
     try {
         const db= client.db("whatsapp");
         const users=db.collection("users");
         const query = { username, password };
         let result = await users.findOne(query);
-        if(result) {
-            answer=true;
-        } else {
+        if(result===null) {
             answer=false;
+        } else {
+            answer=true;
         }
 
     }

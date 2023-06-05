@@ -1,8 +1,8 @@
 import Users from '../models/Users.js'
 import jwt from "jsonwebtoken"
-export function postUsers(req,res) {
-   if(Users.postUsers(req.body.username,req.body.password, req.body.displayName,req.body.profilePic)) {
-    console.log("here2");
+const key="our key";
+export async function postUsers(req,res) {
+   if(( await Users.postUsers(req.body.username,req.body.password, req.body.displayName,req.body.profilePic))) {
     res.status(200).send('');
    } else {
     res.status(409);

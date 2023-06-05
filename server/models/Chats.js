@@ -1,14 +1,15 @@
 import { MongoClient } from 'mongodb';
 
 async function getChats(userName) {
-    const client= new MongoClient("mongodb://localhost:27017");
+    const client= new MongoClient('mongodb://127.0.0.1:27017');
+    let returnChats=[];
     try {
         const db= client.db("whatsapp");
         const chatsCollection=db.collection("chats");
         let chat1 = await chatsCollection.find({"user1.username": userName}).toArray();
         let chat2 = await chatsCollection.find({"user2.username": userName}).toArray();
         let chats=[...chat1, ...chat2];
-        let returnChats=[];
+        console.log("1");
         for (let i=0; i<chats.length;i++) {
             let chat;
             if(chats[i].user1.username===userName) {
@@ -18,16 +19,17 @@ async function getChats(userName) {
             }
             returnChats.push(chat);
         }
+        console.log("2");
+
     }
     finally {
-        await client.close();    
-        return chat;
+        await client.close(); 
+        console.log("2");
+        return returnChats;
     }
-  
-
 }
 async function postChats(userName, newUser) {
-    const client= new MongoClient("mongodb://localhost:27017");
+    const client= new MongoClient('mongodb://127.0.0.1:27017');
     try {
         let id;
         const db= client.db("whatsapp");

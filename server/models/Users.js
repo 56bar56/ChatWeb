@@ -1,17 +1,14 @@
 import { MongoClient } from 'mongodb';
  async function postUsers(username,password,displayName,profilePic) {
-    console.log(username,password,displayName,profilePic);
     let answer=true;
-    const client= new MongoClient("mongodb://localhost:27017");
+    const client= new MongoClient('mongodb://127.0.0.1:27017');
     try {
         const db= client.db("whatsapp");
         const users=db.collection("users");
-        let result = await users.findOne({"username": username});
-        if(result=== null) {
-            console.log("insert");
-            await users.insertOne({"username" : username, "password" : password, "displayName" : displayName, "profilePic" : profilePic  });
+        let result = await users.findOne({username: username});
+        if(result===null) {
+            await users.insertOne({username : username, password : password, displayName : displayName, profilePic : profilePic  });
         } else {
-            console.log("false");
             answer=false;
         }
 

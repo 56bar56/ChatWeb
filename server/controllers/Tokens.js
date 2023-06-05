@@ -1,11 +1,13 @@
 import loginModel from '../models/Tokens.js'
-function getToken(req,res) {
-    const Token= loginModel.getToken(req.body.username, req.body.password);
+async function getToken(req,res) {
+    console.log("hellooo");
+    const Token= await loginModel.getToken(req.body.username, req.body.password);
+    console.log(Token);
     if(Token==='Incorrect username and/or password') {
         res.status(404).send('Incorrect username and/or password');
 
     } else {
-        res.status(200).json({ Token });
+        res.status(200).send(Token);
     }    
 }
 export default getToken
