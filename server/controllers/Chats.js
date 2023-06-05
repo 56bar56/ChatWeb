@@ -10,8 +10,11 @@ export async function getChats(req,res) {
         const data = jwt.verify(token, key);
         const username= data.username; 
         const chats= await Chats.getChats(username);
-        res.status(200).send(chats);
-        //res.status(200).send("hellooo");
+        if(chats===false) {
+            res.status(401).send("Invalid Token");
+        } else {
+            res.status(200).send(chats);
+        }
         } catch (err) {
         res.status(401).send("Invalid Token");
         }
@@ -31,7 +34,15 @@ export async function postChats(req,res) {
         const data = jwt.verify(token, key);
         const username= data.username;  
         let ret= await Chats.postChats(username,req.body.username);
-        res.status(200).send(ret);
+        if(ret===1) {
+            res.status(401).send("Invalid Token");
+        } else {
+            if (ret===2) {
+                res.status(409).send("No such user");
+            } else {
+                res.status(200).send(ret);
+            }
+        }
     
         } catch (err) {
         res.status(401).send("Invalid Token");

@@ -40,7 +40,10 @@ function ChatUp(props) {
           </button>
           <div className="userPicName">
             <img
-              src={props.profilePic}
+              src={
+                props.profilePic ||
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+              }
               className="img-fluid rounded-circle"
               width="90"
               height="90"

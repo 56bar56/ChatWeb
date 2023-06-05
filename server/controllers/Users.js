@@ -5,8 +5,7 @@ export async function postUsers(req,res) {
    if(( await Users.postUsers(req.body.username,req.body.password, req.body.displayName,req.body.profilePic))) {
     res.status(200).send('');
    } else {
-    res.status(409);
-
+    res.status(409).send('username already used');
    }
 }
 export async function getUsers(req,res) {
@@ -19,8 +18,11 @@ export async function getUsers(req,res) {
             const username= data.username;  
             if(username===req.params.id) {
                 let ret= await Users.getUsers(req.params.id);
-                //לוודא שככה נגיע לid
-                res.status(200).send(ret);
+                if (ret===false) {
+                    res.status(401).send('you dont have the fit token');
+                } else {
+                    res.status(200).send(ret);
+                }
             } else {
             res.status(409).send('you dont have the fit token');
             }

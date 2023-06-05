@@ -176,6 +176,7 @@ function ContactList(props) {
             setpartnerImage={props.setpartnerImage}
             time={props.time}
             setTime={props.setTime}
+            setmessageAddContact={setmessageAddContact}
           />
         ))}
       </ul>

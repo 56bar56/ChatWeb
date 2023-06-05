@@ -45,6 +45,7 @@ function ListItem(props) {
   const [name, setName] = useState('');
 
   async function clickActive() {
+    props.setmessageAddContact('');
     props.setchatsUsers((prevUsers) => {
       const temp = prevUsers.map((user) => {
         if (user.id === props.obj.id) {

@@ -28,8 +28,12 @@ import { MongoClient } from 'mongodb';
          result = await users.findOne({"username": id});
     }
     finally{
-        await client.close();   
-        return {"username" : result.username, "displayName" : result.displayName, "profilePic" : result.profilePic}; 
+        await client.close();  
+        if(result===null) {
+            return false;
+        } else {
+            return {"username" : result.username, "displayName" : result.displayName, "profilePic" : result.profilePic}; 
+        }
     }
 }
 

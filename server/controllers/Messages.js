@@ -9,8 +9,16 @@ export async function getMessages(req,res) {
         // Verify the token is valid
         const data = jwt.verify(token, key);
         const username= data.username; 
-        const returnValue= await Messages.getMessages(req.params.id);
-        res.status(200).send(returnValue);
+        const returnValue= await Messages.getMessages(username,req.params.id);
+        if(returnValue===2) {
+            res.status(401).send("Invalid Token");
+        } else {
+            if(returnValue===3) {
+                res.status(409).send("we dont have this id");
+            } else {
+                res.status(200).send(returnValue);
+            }
+        }
         
         } catch (err) {
         res.status(401).send("Invalid Token");
@@ -19,7 +27,6 @@ export async function getMessages(req,res) {
     else {
         res.status(403).send('Token required');
     }    
-//להוסיף בדיקות    
 }
 
 
@@ -31,8 +38,16 @@ export function postMessages(req,res) {
         // Verify the token is valid
         const data = jwt.verify(token, key);
         const username= data.username;  
-        Messages.postMessages(username,req.params.id, req.body.msg);
+        const retval=Messages.postMessages(username,req.params.id, req.body.msg);
+       if(retval===1) {
         res.status(200).send('sent');
+       } else {
+            if(retval===2) {
+                res.status(401).send("Invalid Token");
+            } else {
+                res.status(409).send("we dont have this id");
+            }
+       }
         } catch (err) {
         res.status(401).send("Invalid Token");
         return
