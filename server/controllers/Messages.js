@@ -30,7 +30,7 @@ export async function getMessages(req,res) {
 }
 
 
-export function postMessages(req,res) {
+export async function postMessages(req,res) {
     if (req.headers.authorization) {
         // Extract the token from that header
         const token = req.headers.authorization.split(" ")[1];
@@ -38,7 +38,7 @@ export function postMessages(req,res) {
         // Verify the token is valid
         const data = jwt.verify(token, key);
         const username= data.username;  
-        const retval=Messages.postMessages(username,req.params.id, req.body.msg);
+        const retval= await Messages.postMessages(username,req.params.id, req.body.msg);
        if(retval===1) {
         res.status(200).send('sent');
        } else {
