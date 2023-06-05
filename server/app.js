@@ -7,7 +7,7 @@ const server= express();
 
 server.use(express.static('public'));
 server.use(express.json());
-server.use(bodyParser());
+server.use(bodyParser.urlencoded({extended: true}));
 //server.set('view engine', 'ejs');
 server.use('/api/Tokens',routerToken);
 server.use('/api/Chats',routerChats);
