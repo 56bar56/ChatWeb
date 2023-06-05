@@ -31,14 +31,11 @@ io.on('connection', (socket) => {
             const objectId = new ObjectId(chatid);
             let chat = await chatsCollection.findOne({_id: objectId});
             if(chat===null) {
-                console.log("here3");
 
                 const returnSituation=3;
             } else {
-                console.log("here4");
                 user1 = chat.user1.username;
                 user2 = chat.user2.username;
-                console.log(user1,user2);
                 for(let i=0; i<chat.msgId.length;i++) {
                     let oneMassege= await messgaesCollection.findOne({_id : chat.msgId[i]});
                     masseges.push(oneMassege);
@@ -47,7 +44,6 @@ io.on('connection', (socket) => {
         }
         finally{
             const answer = {'user1': user1, 'user2':user2, 'msg': masseges};
-            console.log(answer);
             socket.broadcast.emit( 'msg' , answer);
         }
     });
